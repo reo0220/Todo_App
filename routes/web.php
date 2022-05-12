@@ -14,3 +14,11 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+// /tasksにアクセスするとTaskControllerのindexアクションが実行
+Route::resource('tasks','TaskController');
+
+//HTTPS接続でアセットを読み込むための処理
+if(env('APP_ENV') === 'local'){
+    URL::forceScheme('https');
+}

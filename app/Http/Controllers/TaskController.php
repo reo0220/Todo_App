@@ -7,79 +7,62 @@ use Illuminate\Http\Request;
 
 class TaskController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    /*一覧ページ*/
     public function index()
     {
-        //
+       //作成されているタスクを全て取得
+       $tasks = Task::all();
+      
+       // resources/views/posts/index.blade.phpをビューとして呼び出す
+        return view('tasks.index',compact('tasks'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    /*新規作成ページ*/
     public function create()
     {
-        //
+        return view('tasks.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+    /*新規作成処理*/
     public function store(Request $request)
     {
-        //
+       //新しいTaskモデルのデータを作成    
+        $task = new Task();
+        
+       // $requestに保存されているパラメータをTaskモデルのカラムごとに受け取る    
+        $task->task = $request->input('task');
+        $task->description = $request->input('description');
+        
+       //作成したモデルのデータを保存    
+        $task->save();
+        
+       //メッセージとともに/tasksにリダイレクト
+        return redirect()->route('tasks.index')->with('message','タスクが追加されました！');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Task  $task
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Task $task)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Task  $task
-     * @return \Illuminate\Http\Response
-     */
+   
+    /*編集ページ*/
     public function edit(Task $task)
     {
-        //
+       // compact関数でビューにtaskという変数を渡す    
+        return view('tasks.edit',compact('task'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Task  $task
-     * @return \Illuminate\Http\Response
-     */
+    /*編集処理*/
     public function update(Request $request, Task $task)
     {
-        //
+        $task->task = $request->input('task');
+        $task->description = $request->input('description');
+        $task->save();
+        
+        return redirect()->route('tasks.index')->with('message','タスクが編集されました！');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Task  $task
-     * @return \Illuminate\Http\Response
-     */
+    /*削除処理*/
     public function destroy(Task $task)
     {
-        //
+        $task->delete();
+        
+        return redirect()->route('tasks.index')->with('message','タスクを完了しました！');
     }
 }
