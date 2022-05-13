@@ -1,3 +1,9 @@
+@extends('layouts.layouts')
+
+@section('title','タスク一覧')
+
+@section('content')
+
 <h1>タスク一覧</h1>
 <a href="/tasks/create">新規作成</a>
 
@@ -12,5 +18,5 @@
          <button type="submit">タスク完了</button>
      </form>
 @endforeach     
-     
+@endsection     
      
