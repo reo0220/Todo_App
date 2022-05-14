@@ -26,6 +26,16 @@ class TaskController extends Controller
     /*新規作成処理*/
     public function store(Request $request)
     {
+       //バリデーション設定
+        $request->validate([
+            'task' => 'required',
+            'description' => 'required',
+        ],
+          [
+            'task.required' => 'タイトルを入力してください。',
+            'description.required' =>'詳細を入力してください。',   
+          ]);
+      
        //新しいTaskモデルのデータを作成    
         $task = new Task();
         
@@ -51,6 +61,15 @@ class TaskController extends Controller
     /*編集処理*/
     public function update(Request $request, Task $task)
     {
+        $request->validate([
+            'task' => 'required',
+            'description' => 'required',
+        ],
+          [
+            'task.required' => 'タイトルを入力してください。',
+            'description.required' =>'詳細を入力してください。',   
+          ]);
+       
         $task->task = $request->input('task');
         $task->description = $request->input('description');
         $task->save();
